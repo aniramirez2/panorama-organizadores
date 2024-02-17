@@ -17,98 +17,98 @@ import {
   Textarea,
   FormHelperText,
   InputRightElement,
+  Checkbox, 
+  CheckboxGroup,
+  Stack
 } from '@chakra-ui/react'
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useFormik } from 'formik';
 import { useToast } from '@chakra-ui/react'
 
-const Form1 = () => {
+const Form1 = ({formik}) => {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-        User Registration
+        Información del contacto
       </Heading>
-      <Flex>
-        <FormControl mr="5%">
-          <FormLabel htmlFor="first-name" fontWeight={'normal'}>
-            First name
-          </FormLabel>
-          <Input id="first-name" placeholder="First name" />
-        </FormControl>
 
-        <FormControl>
-          <FormLabel htmlFor="last-name" fontWeight={'normal'}>
-            Last name
-          </FormLabel>
-          <Input id="last-name" placeholder="First name" />
-        </FormControl>
-      </Flex>
       <FormControl mt="2%">
         <FormLabel htmlFor="email" fontWeight={'normal'}>
-          Email address
+          Correo
         </FormLabel>
-        <Input id="email" type="email" />
+        <Input id="email" type="email" name="correo" onChange={formik.handleChange}/>
         <FormHelperText>We&apos;ll never share your email.</FormHelperText>
       </FormControl>
 
+        <FormControl>
+          <FormLabel htmlFor="name" fontWeight={'normal'}>
+            Nombre
+          </FormLabel>
+          <Input id="name" placeholder="Nombre" name='organizador' onChange={formik.handleChange} />
+        </FormControl>
+
+      <FormControl mr="5%">
+          <FormLabel htmlFor="phone" fontWeight={'normal'}>
+            Celular
+          </FormLabel>
+          <Input id="phone" placeholder="Teléfono" type='phone' name="telefono" onChange={formik.handleChange} />
+        </FormControl>
+
       <FormControl>
         <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
-          Password
+          Redes sociales
         </FormLabel>
         <InputGroup size="md">
           <Input
             pr="4.5rem"
-            type={show ? 'text' : 'password'}
-            placeholder="Enter password"
+            type="text"
+            placeholder="Link"
+            name='redesSociales'
+            onChange={formik.handleChange}
           />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? 'Hide' : 'Show'}
-            </Button>
-          </InputRightElement>
         </InputGroup>
       </FormControl>
     </>
   )
 }
 
-const Form2 = () => {
+const Form2 = ({formik}) => {
+
+const [startDate, setStartDate] = useState(new Date());
+const [startTime, setStartTime] = useState("");
+const [endTime, setEndTime] = useState("");
+const [endDate, setEndDate] = useState(new Date());
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
-        User Details
+        Información del evento
       </Heading>
       <FormControl as={GridItem} colSpan={[6, 3]}>
         <FormLabel
-          htmlFor="country"
+          htmlFor="event"
           fontSize="sm"
           fontWeight="md"
           color="gray.700"
           _dark={{
             color: 'gray.50',
           }}>
-          Country / Region
+          Evento
         </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Select option"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md">
-          <option>United States</option>
-          <option>Canada</option>
-          <option>Mexico</option>
-        </Select>
+        <Input
+            pr="4.5rem"
+            type="text"
+            placeholder="Nombre del evento"
+            name='evento'
+            onChange={formik.handleChange}
+          />
       </FormControl>
 
       <FormControl as={GridItem} colSpan={6}>
         <FormLabel
-          htmlFor="street_address"
+          htmlFor="description"
           fontSize="sm"
           fontWeight="md"
           color="gray.700"
@@ -116,24 +116,40 @@ const Form2 = () => {
             color: 'gray.50',
           }}
           mt="2%">
-          Street address
+            Descripción
         </FormLabel>
         <Input
           type="text"
-          name="street_address"
-          id="street_address"
-          autoComplete="street-address"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
+          name="descripcion"
+          id="descripcion"
           w="full"
-          rounded="md"
+          onChange={formik.handleChange}
+        />
+        <FormHelperText>          Por favor detalle la mayor cantidad de información del evento y asegúrese de responder ¿De qué se trata el evento?¿A quién está dirigido?¿Algún requisito especial?
+</FormHelperText>
+      </FormControl>
+      <Flex>
+      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
+        <FormLabel
+          htmlFor="startDate"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: 'gray.50',
+          }}
+          mt="2%">
+          Fecha de inicio
+        </FormLabel>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
         />
       </FormControl>
 
       <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
         <FormLabel
-          htmlFor="city"
+          htmlFor="startTime"
           fontSize="sm"
           fontWeight="md"
           color="gray.700"
@@ -141,24 +157,35 @@ const Form2 = () => {
             color: 'gray.50',
           }}
           mt="2%">
-          City
+          Hora de inicio
         </FormLabel>
         <Input
-          type="text"
-          name="city"
-          id="city"
-          autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          onChange={() => {}}
+        />
+      </FormControl>
+      </Flex>
+      <Flex>
+      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
+        <FormLabel
+          htmlFor="startDate"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: 'gray.50',
+          }}
+          mt="2%">
+          Fecha de finalizaciòn
+        </FormLabel>
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setStartDate(date)}
         />
       </FormControl>
 
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
         <FormLabel
-          htmlFor="state"
+          htmlFor="endTime"
           fontSize="sm"
           fontWeight="md"
           color="gray.700"
@@ -166,54 +193,70 @@ const Form2 = () => {
             color: 'gray.50',
           }}
           mt="2%">
-          State / Province
+          Hora de finalizacion
         </FormLabel>
         <Input
-          type="text"
-          name="state"
-          id="state"
-          autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          selected={endTime}
+          onChange={() => {}}
         />
       </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          ZIP / Postal
+      </Flex>
+      <FormControl as={GridItem} colSpan={[3, 2]}>
+          <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Idioma
+          </FormLabel>
+          <Select placeholder='Select option' onChange={formik.handleChange} name='idioma'>
+            <option value='Español'>Español</option>
+            <option value='Ingles'>Ingles</option>
+            <option value='Portgues'>Portgues</option>
+            <option value='Frances'>Frances</option>
+            <option value='Otro'>Otro</option>
+          </Select>
+        </FormControl>
+        <FormControl>
+        <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
+          Link info
         </FormLabel>
-        <Input
-          type="text"
-          name="postal_code"
-          id="postal_code"
-          autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type="text"
+            placeholder="Link"
+            name='linkInfo'
+            onChange={formik.handleChange}
+          />
+        </InputGroup>
+        <FormHelperText>¿Algún link dónde podamos encontrar información adicional?</FormHelperText>
+      </FormControl>
+      <FormControl>
+        <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
+          Fotos
+        </FormLabel>
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type="file"
+          />
+        </InputGroup>
       </FormControl>
     </>
   )
 }
 
-const Form3 = () => {
+const Form3 = ({formik}) => {
+
+
+  const [checkedItems, setCheckedItems] = useState([])  
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="normal">
-        Social Handles
+        Información del evento
       </Heading>
       <SimpleGrid columns={1} spacing={6}>
         <FormControl as={GridItem} colSpan={[3, 2]}>
@@ -224,28 +267,21 @@ const Form3 = () => {
             _dark={{
               color: 'gray.50',
             }}>
-            Website
+            Ubicación
           </FormLabel>
           <InputGroup size="sm">
-            <InputLeftAddon
-              bg="gray.50"
-              _dark={{
-                bg: 'gray.800',
-              }}
-              color="gray.500"
-              rounded="md">
-              http://
-            </InputLeftAddon>
             <Input
-              type="tel"
-              placeholder="www.example.com"
+              type="text"
+              placeholder="calle 50 · 50 - 50"
               focusBorderColor="brand.400"
               rounded="md"
+              name='ubicacion'
+              onChange={formik.handleChange}
             />
           </InputGroup>
         </FormControl>
 
-        <FormControl id="email" mt={1}>
+        <FormControl as={GridItem} colSpan={[3, 2]}>
           <FormLabel
             fontSize="sm"
             fontWeight="md"
@@ -253,20 +289,92 @@ const Form3 = () => {
             _dark={{
               color: 'gray.50',
             }}>
-            About
+            Precio
           </FormLabel>
-          <Textarea
-            placeholder="you@example.com"
-            rows={3}
-            shadow="sm"
-            focusBorderColor="brand.400"
-            fontSize={{
-              sm: 'sm',
-            }}
-          />
-          <FormHelperText>
-            Brief description for your profile. URLs are hyperlinked.
-          </FormHelperText>
+            <Input
+              type="text" name="precio"
+              onChange={formik.handleChange}
+            />
+            <FormHelperText>Si es gratis, escribe 'Gratis', si es En taquilla escribe 'En taquilla', si es otro utilizar el siguiente formato para colocar el precio y moneda: 12000 COP o 34 USD
+            </FormHelperText>
+        </FormControl>
+
+        <FormControl as={GridItem} colSpan={[3, 2]}>
+          <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Publico Objetivo
+          </FormLabel>
+          <Select placeholder='Select option' name='publicoObjetivo' onChange={formik.handleChange}>
+            <option value='Niños'>Niños (0 a 15)</option>
+            <option value='Jovenes'>Jovenes (15 a 29)</option>
+            <option value='Mayores'>Mayores de edad</option>
+            <option value='Todos'>No importa la edad</option>
+          </Select>
+        </FormControl>
+
+        <FormControl as={GridItem} colSpan={[3, 2]}>
+          <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Categoria
+          </FormLabel>
+          <Select placeholder='Select option' name='categoria' onChange={formik.handleChange}>
+            <option value='Cultura'>Cultura (Teatros, Galerias, Librerías, Museos, Exposiciones...)</option>
+            <option value='Entretenimiento'>Entretenimiento (Conciertos, Festivales, Fiestas, Inauguraciones, Ferias...)</option>
+            <option value='Deportivo'>
+Deportivo (Competencias, Torneos, Ligas, Campeonatos, Encuentros deportivos, Entrenamientos, Partidos...)</option>
+            <option value='Académico'>Académico (Convenciones, Educativos, Congresos...)</option>
+            <option value='Negocios'>Negocios (Convenciones, Educativos, Congresos...)</option>
+            <option value='Religioso'>Religioso (Ceremonias, Celebraciones...)</option>
+          </Select>
+        </FormControl>
+
+        <FormControl>
+        <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Selecciona las otras opciones que tiene el evento
+          </FormLabel>
+        <Stack spacing={5} direction='row'>
+          <Checkbox colorScheme='red' >
+            Venta de Comida
+          </Checkbox>
+          <Checkbox colorScheme='green' >
+            Venta de Licor
+          </Checkbox>
+          <Checkbox colorScheme='blue' >
+            Accesible silla de ruedas
+          </Checkbox>
+        </Stack>
+        </FormControl>
+        <FormControl as={GridItem} colSpan={[3, 2]}>
+          <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+            Capacidad del lugar
+          </FormLabel>
+            <Input
+              type="text" name="capacidad" onChange={formik.handleChange}
+            />
+            <FormHelperText>Por favor indicar cuántas personas caben en el lugar aproximadamente
+            </FormHelperText>
         </FormControl>
       </SimpleGrid>
     </>
@@ -278,17 +386,39 @@ export default function App() {
   const [step, setStep] = useState(1)
   const [progress, setProgress] = useState(33.33)
 
+  const formik = useFormik({
+    initialValues: {
+      correo: '',
+      organizador: '',
+      telefono: '',
+      redesSociales: '',
+      evento: '',
+      descripcion: '',
+      ubicacion: '',
+      precio: '',
+      publicoObjetivo: '',
+      otrasOpciones: '',
+      idioma: '',
+      capacidad: '',
+      categoria: '',
+      linkInfo: '',
+    },
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
-    <Box display="flex" justifyContent="center" width="100%" height="100vh" alignItems="center">
+    <Box display="flex" justifyContent="center" width="100%" my={4} alignItems="center">
       <Box
         borderWidth="1px"
         rounded="lg"
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
         width={800}
         p={6}
-        as="form">
+        as="form" onSubmit={formik.handleSubmit}>
         <Progress hasStripe value={progress} mb="5%" mx="5%" isAnimated></Progress>
-        {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+        {step === 1 ? <Form1 formik={formik} /> : step === 2 ? <Form2 formik={formik} /> : <Form3 formik={formik} />}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between">
             <Flex>
